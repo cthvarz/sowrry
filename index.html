@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warm Ocean Harvest Special Apology 🌊 Special for You</title>
+  <!-- Google Fonts: Poppins & VT323 (Retro Pixel) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: #08121e;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* LATAR BELAKANG GAMBAR / GIF */
+    .bg-gif {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* BINGKAI KONTRASTING BIRU LAUT HANGAT (WARM OCEAN FRAME) */
+    .hm-ocean-frame {
+      background: linear-gradient(180deg, #183a54 0%, #0d2335 100%);
+      border: 4px solid #7bc3d1;
+      outline: 3px solid #06111a;
+      box-shadow: inset 0 0 0 2px #0f273b, 
+                  inset 0 0 12px rgba(0, 0, 0, 0.8),
+                  0 10px 25px rgba(0, 0, 0, 0.7);
+      border-radius: 6px;
+      position: relative;
+    }
+
+    /* COVER UTAMA */
+    .cover-card {
+      position: relative;
+      z-index: 10;
+      width: 90%;
+      max-width: 380px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .cover-card h1 {
+      color: #e2f4f7;
+      font-family: 'VT323', monospace !important;
+      font-size: 32px;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 0px #06111a;
+    }
+
+    .cover-card p {
+      color: #7bc3d1;
+      font-family: 'VT323', monospace !important;
+      font-size: 20px;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 0px #06111a;
+    }
+
+    /* TOMBOL BUKA PERCAKAPAN BERWARNA CREAM LAUT HANGAT */
+    .btn-open-chat {
+      width: 100%;
+      background: linear-gradient(180deg, #f7f3e8 0%, #e8d9b5 60%, #d4bf92 100%);
+      color: #0d2335;
+      border: 3px solid #ffffff;
+      outline: 2px solid #06111a;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'VT323', monospace !important;
+      font-size: 24px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      transition: all 0.2s ease;
+      animation: buttonPulse 1.6s infinite ease-in-out;
+    }
+
+    .btn-open-chat:active {
+      transform: scale(0.95);
+      background: linear-gradient(180deg, #e8d9b5 0%, #d4bf92 100%);
+    }
+
+    .btn-cursor {
+      color: #183a54;
+      margin-right: 6px;
+      text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes buttonPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    /* POP-UP OVERLAY FULL SCREEN */
+    .hm-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(6, 17, 26, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      padding-bottom: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .hm-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* CONTAINER DIALOG HARVEST MOON */
+    .hm-container {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transform: translateY(30px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .hm-modal-overlay.active .hm-container {
+      transform: translateY(0) scale(1);
+    }
+
+    /* KOTAK MENU PILIHAN (YES ATAS, NO BAWAH) */
+    .hm-choice-box {
+      align-self: flex-end;
+      width: 130px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 5;
+    }
+
+    .hm-option {
+      font-family: 'VT323', monospace !important;
+      font-size: 26px;
+      color: #e2f4f7;
+      text-shadow: 2px 2px 0px #06111a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      line-height: 1;
+      transition: all 0.1s;
+    }
+
+    .hm-option:hover, .hm-option.selected {
+      color: #ffffff;
+      text-shadow: 2px 2px 0px #06111a, 0 0 8px #7bc3d1;
+    }
+
+    .hm-cursor {
+      visibility: hidden;
+      color: #ffd166;
+      font-size: 22px;
+      text-shadow: 1px 1px 0 #06111a;
+      animation: handBounce 0.6s infinite alternate ease-in-out;
+    }
+
+    .hm-option:hover .hm-cursor,
+    .hm-option.selected .hm-cursor {
+      visibility: visible;
+    }
+
+    @keyframes handBounce {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(4px); }
+    }
+
+    /* KOTAK DIALOG UTAMA */
+    .hm-dialogue-box {
+      width: 100%;
+      min-height: 110px;
+      padding: 14px 18px;
+      color: #e2f4f7;
+      font-family: 'VT323', monospace !important;
+      font-size: 23px;
+      line-height: 1.3;
+      text-align: left;
+      letter-spacing: 0.5px;
+      text-shadow: 2px 2px 0px #06111a;
+      word-break: break-word;
+      cursor: pointer;
+    }
+
+    .hm-dialogue-box::after {
+      content: '▼';
+      position: absolute;
+      right: 12px;
+      bottom: 8px;
+      font-size: 14px;
+      color: #7bc3d1;
+      text-shadow: 1px 1px 0 #06111a;
+      animation: blink 0.8s infinite alternate;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.2; transform: translateY(0); }
+      100% { opacity: 1; transform: translateY(3px); }
+    }
+
+    /* PAGE 2: DIALOG SCREEN DENGAN KARAKTER CYNTHYA */
+    .story-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(6, 17, 26, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      padding-bottom: 35px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .story-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .story-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* AREA SPEAKER (POTRET & NAMEPLATE CYNTHYA) */
+    .speaker-area {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: -4px;
+      margin-left: 10px;
+      z-index: 10;
+    }
+
+    /* BINGKAI FOTO KARAKTER */
+    .speaker-portrait-box {
+      width: 75px;
+      height: 85px;
+      background: linear-gradient(180deg, #183a54 0%, #0d2335 100%);
+      border: 3px solid #7bc3d1;
+      outline: 2px solid #06111a;
+      border-radius: 6px 6px 0 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    }
+
+    .speaker-portrait-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* NAMEPLATE / KOTAK NAMA CYNTHYA */
+    .speaker-nameplate {
+      background: linear-gradient(180deg, #f7f3e8 0%, #e8d9b5 100%);
+      color: #0d2335;
+      border: 3px solid #ffffff;
+      outline: 2px solid #06111a;
+      padding: 4px 16px;
+      border-radius: 6px 6px 0 0;
+      font-family: 'VT323', monospace !important;
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BGM AUDIO -->
+  <audio id="bgmAudio" src="blue.mp3" loop></audio>
+
+  <!-- BACKGROUND GAMBAR / GIF -->
+  <img src="sorry.GIF" class="bg-gif" alt="Background" onerror="this.style.display='none'">
+
+  <!-- PAGE 1: COVER UTAMA DENGAN TEMA BIRU LAUT HANGAT -->
+  <div class="cover-card hm-ocean-frame" id="coverCard">
+    <h1>Special Message 💌</h1>
+    <p>Ada sesuatu yang ingin aku sampaikan ke kamu sayang...</p>
+    <button class="btn-open-chat" onclick="openHarvestMenu()">
+      <span class="btn-cursor">🖛</span>Buka percakapan ini
+    </button>
+  </div>
+
+  <!-- POP-UP MENU YES / NO -->
+  <div class="hm-modal-overlay" id="hmModal">
+    <div class="hm-container">
+      <div class="hm-choice-box hm-ocean-frame">
+        <div class="hm-option selected" onclick="chooseOption('YES')">
+          <span class="hm-cursor">🖛</span> YES
+        </div>
+        <div class="hm-option" onclick="chooseOption('NO')">
+          <span class="hm-cursor">🖛</span> NO
+        </div>
+      </div>
+
+      <div class="hm-dialogue-box hm-ocean-frame">
+        "<span id="dialogueText">Baca permintaan maaf dari aku?</span>"
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: STORY DIALOGUE SCREEN (CYNTHYA) -->
+  <div class="story-screen" id="storyScreen">
+    <div class="story-container">
+      
+      <!-- NAMA & KARAKTER CYNTHYA -->
+      <div class="speaker-area">
+        <div class="speaker-portrait-box">
+          <img src="meretro.GIF" alt="Cynthya Avatar" onerror="this.src='meretro.GIF'">
+        </div>
+        <div class="speaker-nameplate">
+          Cynthya
+        </div>
+      </div>
+
+      <!-- KOTAK DIALOG UTAMA DENGAN EFEK KETIK -->
+      <div class="hm-dialogue-box hm-ocean-frame" onclick="nextStoryLine()">
+        "<span id="storyText"></span>"
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function openHarvestMenu() {
+      const bgm = document.getElementById('bgmAudio');
+      if (bgm) {
+        bgm.play().catch(err => console.log("Audio play check:", err));
+      }
+      const modal = document.getElementById('hmModal');
+      modal.classList.add('active');
+    }
+
+    function chooseOption(choice) {
+      if (choice === 'YES') {
+        document.getElementById('hmModal').classList.remove('active');
+        document.getElementById('coverCard').style.display = 'none';
+        
+        const storyScreen = document.getElementById('storyScreen');
+        storyScreen.classList.add('active');
+        
+        currentLineIndex = 0;
+        playStoryTypewriter(storyLines[currentLineIndex]);
+
+      } else if (choice === 'NO') {
+        alert("Ah.. tidak ya? mungkin lain kali ya sayang? tapi kamu pantes dapat maaf dari aku!🥺");
+      }
+    }
+
+    // DAFTAR PERCAKAPAN DIALOG PAGE 2
+    const storyLines = [
+      "Hai irsyam sayang... Hum, mungkin akhir-akhir ini ada part dari aku yang bikin kamu kurang nyaman ya?🥺",
+      "Aku mau minta maaf kalau ada kata-kata yang bikin kamu sedih atau lelah waktu aku marahin kamu❤️‍🩹",
+      "Kamu tau kan, aku selalu sayang dan cinta banget sama kamu? tapi, aku udah keterlaluan banget ya minta dikabarin mulu? aku bakal handle dan singkirkan itu yaa💖",
+		"Aku selalu nyariin kamu kesannya kesepian padahal aku udah di fase khawatir sama keadaan kamu daripada hal yang lain tapi aku sampai marahin kamu, im so sorry..",
+      "Makasih ya kamu udah mau baca ini dan selalu nunjukkin sisi soft kamu untuk selalu sabar ngadepin aku. But, in the deepest of my heart i always love you mostly! 💗"
+    ];
+
+    let currentLineIndex = 0;
+    let storyTypingTimer = null;
+    let isTyping = false;
+
+    function playStoryTypewriter(text, charIndex = 0) {
+      const target = document.getElementById('storyText');
+      isTyping = true;
+
+      if (charIndex === 0) target.textContent = '';
+
+      if (charIndex < text.length) {
+        target.textContent += text.charAt(charIndex);
+        storyTypingTimer = setTimeout(() => {
+          playStoryTypewriter(text, charIndex + 1);
+        }, 30);
+      } else {
+        isTyping = false;
+      }
+    }
+
+    function nextStoryLine() {
+      if (isTyping) return;
+
+      currentLineIndex++;
+      if (currentLineIndex < storyLines.length) {
+        clearTimeout(storyTypingTimer);
+        playStoryTypewriter(storyLines[currentLineIndex]);
+      } else {
+        alert("Pesan dari Cynthya selesai! Kamu bisa lanjutin atau tambahin fitur interaktif lainnya di sini! ✨");
+      }
+    }
+  </script>
+</body>
+</html>
